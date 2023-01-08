@@ -44,7 +44,7 @@ public class Counsel extends BaseEntity{
     private String address;
 
     @Column(columnDefinition = "varchar(50) DEFAULT NULL COMMENT '상세 주소'")
-    private String adressDetail;
+    private String addressDetail;
 
     @Column(columnDefinition = "varchar(5) DEFAULT NULL COMMENT '우편번호'")
     private String zipCode;
