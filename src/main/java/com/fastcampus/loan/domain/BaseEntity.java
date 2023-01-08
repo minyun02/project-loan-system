@@ -20,6 +20,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable {
 
+  /*
+  * 시스템상 생성 일자와 수정 일자, 삭제여부 판단 등의 기본 필드를 정의
+  * */
+
   @CreatedDate
   @Column(updatable = false, columnDefinition = "datetime default CURRENT_TIMESTAMP NOT NULL COMMENT '생성일자'")
   private LocalDateTime createdAt;
