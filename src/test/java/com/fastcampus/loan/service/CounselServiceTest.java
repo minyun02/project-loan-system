@@ -5,7 +5,10 @@ import static org.mockito.Mockito.when;
 
 import com.fastcampus.loan.domain.Counsel;
 import com.fastcampus.loan.dto.CounselDTO.*;
+import com.fastcampus.loan.exception.BaseException;
+import com.fastcampus.loan.exception.ResultType;
 import com.fastcampus.loan.repository.CounselRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
@@ -14,6 +17,8 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)//ExtendWith 애너테이션이 import가 안되는 현상이 있었는데 gradle에 testImplementation이 누락되었었다.
 public class CounselServiceTest {//CounselService에대한 유닛 테스트를 진행한다.
@@ -54,5 +59,29 @@ public class CounselServiceTest {//CounselService에대한 유닛 테스트를 �
         Response actual = counselService.create(request);
 
         assertThat(actual.getName()).isSameAs(entity.getName());
+    }
+
+    @Test
+    void Should_ReturnResponseOfExistCounselEntity_When_RequestExistCounselId() {
+        Long findId = 1L;
+
+        Counsel entity = Counsel.builder()
+                .counselId(1L)
+                .build();
+        //mocking처리
+        when(counselRepository.findById(findId)).thenReturn(Optional.ofNullable(entity));
+
+        Response actual = counselService.get(findId);
+
+        assertThat(actual.getCounselId()).isSameAs(findId);
+    }
+
+    @Test
+    void Should_ThrowException_When_RequestNotExistCounselId() {
+        Long findId = 2L;
+
+        when(counselRepository.findById(findId)).thenThrow(new BaseException(ResultType.SYSTEM_ERROR));
+
+        Assertions.assertThrows(BaseException.class, () -> counselService.get(findId));
     }
 }
