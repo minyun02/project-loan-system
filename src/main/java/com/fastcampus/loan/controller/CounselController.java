@@ -1,6 +1,6 @@
 package com.fastcampus.loan.controller;
 
-import com.fastcampus.loan.dto.CounselDTO;
+import com.fastcampus.loan.dto.CounselDTO.*;
 import com.fastcampus.loan.dto.ResponseDTO;
 import com.fastcampus.loan.service.CounselService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class CounselController extends AbstractController {
     private final CounselService counselService;
 
     @PostMapping
-    public ResponseDTO create(@RequestBody CounselDTO.Request request) {
+    public ResponseDTO create(@RequestBody Request request) {
         return ok(counselService.create(request));//동일한 응답값을 내려주기 위한 메서드
     }
 
