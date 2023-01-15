@@ -17,6 +17,10 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 @ExtendWith(MockitoExtension.class)
 public class TermsServiceTest {
 
@@ -47,5 +51,26 @@ public class TermsServiceTest {
 
         assertThat(actual.getName()).isSameAs(entity.getName());
         assertThat(actual.getTermsDetailUrl()).isSameAs(entity.getTermsDetailUrl());
+    }
+
+    @Test
+    void Should_ReturnAllResponseOfExistTermsEntities_When_RequestTermsList() {
+        Terms entityA = Terms.builder()
+                .name("대출 이용약관 1")
+                .termsDetailUrl("https://asdf.asdf.comd/asdf")
+                .build();
+
+        Terms entityB = Terms.builder()
+                .name("대출 이용약관 2")
+                .termsDetailUrl("https://;jk.ljl;.com/lj")
+                .build();
+
+        List<Terms> list = new ArrayList<>(Arrays.asList(entityA, entityB));
+
+        when(termsRepository.findAll()).thenReturn(Arrays.asList(entityA, entityB));
+
+        List<Response> actual = termsService.getAll();
+
+        assertThat(actual.size()).isSameAs(list.size());
     }
 }
