@@ -23,6 +23,7 @@ public class TermsServiceImpl implements TermsService{
 
     @Override
     public Response create(Request request) {
+        //
 
         Terms terms = modelMapper.map(request, Terms.class);
         Terms created = termsRepository.save(terms);
